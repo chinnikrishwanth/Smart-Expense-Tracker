@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">UPI Expense Tracker</string>
+    <string name="welcome_message">Welcome to UPI Expense Tracker</string>
+    
+    <!-- Activity Titles -->
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_expenses">Expenses</string>
+    <string name="title_add_expense">Add Expense</string>
+    <string name="title_settings">Settings</string>
+    
+    <!-- General -->
+    <string name="loading">Loading...</string>
+    <string name="error_generic">Something went wrong</string>
+</resources>
