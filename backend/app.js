@@ -25,13 +25,13 @@ app.use(cors({
   origin: process.env.NODE_ENV === 'production'
     ? ['https://yourdomain.com']
     : [
-        'http://localhost:5173',      // Vite dev server (React frontend)
-        'http://localhost:3000',      // Alternative React port
-        'http://localhost:8080',      // Alternative port
-        'http://10.0.2.2:5000',       // Android emulator accessing backend
-        'http://127.0.0.1:5173',      // Alternative localhost format
-        '*'                            // Allow all origins in development (for Android app flexibility)
-      ],
+      'http://localhost:5173',      // Vite dev server (React frontend)
+      'http://localhost:3000',      // Alternative React port
+      'http://localhost:8080',      // Alternative port
+      'http://10.0.2.2:5000',       // Android emulator accessing backend
+      'http://127.0.0.1:5173',      // Alternative localhost format
+      '*'                            // Allow all origins in development (for Android app flexibility)
+    ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -72,11 +72,11 @@ const flexibleAuth = async (req, res, next) => {
       const token = header.split(' ')[1];
       const jwt = require('jsonwebtoken');
       const SECRET = process.env.JWT_SECRET || 'dev_jwt_secret';
-      
+
       try {
         const decoded = jwt.verify(token, SECRET);
         const user = await User.findById(decoded.id);
-        
+
         if (user) {
           req.user = { id: user._id, _id: user._id, email: user.email };
           return next();
@@ -86,12 +86,12 @@ const flexibleAuth = async (req, res, next) => {
         console.log('JWT auth failed, trying email-based auth');
       }
     }
-    
+
     // If no JWT or JWT failed, try email from query params (for your existing frontend)
     const { user: userEmail } = req.query;
     if (userEmail) {
       const user = await User.findOne({ email: userEmail });
-      
+
       if (user) {
         req.user = { id: user._id, _id: user._id, email: user.email };
         return next();
@@ -102,7 +102,7 @@ const flexibleAuth = async (req, res, next) => {
         });
       }
     }
-    
+
     return res.status(401).json({
       success: false,
       error: 'Unauthorized. Please provide either a valid token or email.'
@@ -119,6 +119,9 @@ const flexibleAuth = async (req, res, next) => {
 // Additional routes that frontend expects - using flexible auth
 app.get('/api/dashboard-summary', flexibleAuth, getDashboardSummary);
 app.get('/api/reports/monthly', flexibleAuth, getReport);
+
+const aiRoutes = require('./routes/aiRoutes');
+app.use('/api/ai', flexibleAuth, aiRoutes);
 
 // SMS Processing endpoint - uses JWT auth only
 app.post('/api/expenses/process-sms', authenticate, require('./controllers/expenseController').processSMS);

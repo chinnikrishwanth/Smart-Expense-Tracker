@@ -11,6 +11,8 @@ function Budget({ user }) {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [forecast, setForecast] = useState(null);
+  const [fetchingForecast, setFetchingForecast] = useState(false);
 
   const fetchBudget = useCallback(async () => {
     if (!user?.email) return;
@@ -33,7 +35,24 @@ function Budget({ user }) {
 
   useEffect(() => {
     fetchBudget();
-  }, [fetchBudget]);
+
+    // Fetch AI forecast
+    const fetchForecast = async () => {
+      if (!user?.email) return;
+      try {
+        setFetchingForecast(true);
+        const data = await apiRequest('/ai/forecast');
+        if (data && data.forecast !== undefined) {
+          setForecast(data);
+        }
+      } catch (err) {
+        console.error("Error fetching AI forecast:", err);
+      } finally {
+        setFetchingForecast(false);
+      }
+    };
+    fetchForecast();
+  }, [fetchBudget, user?.email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,6 +87,26 @@ function Budget({ user }) {
         <h2 className="page-title">Set Monthly Budget</h2>
       </div>
 
+      <div className="card-panel animate-slide-in" style={{ marginBottom: "2rem", background: "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)", borderLeft: "4px solid #8b5cf6" }}>
+        <h3 style={{ marginBottom: "1rem", color: "#1e293b", fontSize: "1.1rem", fontWeight: "700", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          🤖 AI Budget Forecast
+        </h3>
+        {fetchingForecast ? (
+          <div style={{ color: "#64748b", fontStyle: "italic" }}>Analyzing your spending patterns...</div>
+        ) : forecast ? (
+          <div>
+            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#8b5cf6", marginBottom: "0.5rem" }}>
+              ₹{parseFloat(forecast.forecast).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            </div>
+            <div style={{ color: "#64748b", fontSize: "0.9rem" }}>
+              {forecast.message}
+            </div>
+          </div>
+        ) : (
+          <div style={{ color: "#64748b" }}>Not enough data to generate forecast.</div>
+        )}
+      </div>
+
       {error && (
         <div className="alert alert-error">
           {error}
@@ -86,22 +125,22 @@ function Budget({ user }) {
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         cursor: "pointer"
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-5px) scale(1.02)";
-        e.currentTarget.style.boxShadow = "0 25px 50px rgba(99, 102, 241, 0.35)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0) scale(1)";
-        e.currentTarget.style.boxShadow = "0 20px 40px rgba(99, 102, 241, 0.25)";
-      }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-5px) scale(1.02)";
+          e.currentTarget.style.boxShadow = "0 25px 50px rgba(99, 102, 241, 0.35)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0) scale(1)";
+          e.currentTarget.style.boxShadow = "0 20px 40px rgba(99, 102, 241, 0.25)";
+        }}
       >
         <div style={{ fontSize: "1rem", opacity: 0.9, marginBottom: "0.5rem", fontWeight: "500" }}>
           Budget for {formatMonth(month)}
         </div>
         {budget && (
-          <div style={{ 
-            fontSize: "3rem", 
-            fontWeight: "800", 
+          <div style={{
+            fontSize: "3rem",
+            fontWeight: "800",
             letterSpacing: "-1px",
             transition: "transform 0.3s ease"
           }}>

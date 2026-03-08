@@ -4,29 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:background="@color/background">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="?attr/colorPrimary"
-        android:layout_marginBottom="32dp"/>
+        android:textColor="@color/onBackground"
+        android:layout_marginBottom="24dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
+        app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
         android:layout_marginBottom="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
                 android:text="Account"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:textColor="@color/onBackground"
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 android:id="@+id/tvUserEmail"
@@ -42,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:text="user@example.com"
                 android:textSize="16sp"
-                android:textColor="#757575"
-                android:layout_marginBottom="8dp"/>
+                android:textColor="@color/onSurfaceSecondary"
+                android:layout_marginBottom="8dp" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -51,9 +54,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:text="Logout"
-        android:backgroundTint="#D32F2F"
-        app:cornerRadius="8dp"/>
+        android:textAllCaps="false"
+        app:cornerRadius="12dp"
+        android:backgroundTint="@color/expense_red" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base palette (kept for compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,9 +8,22 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    
-    <color name="primary">#00C853</color>
-    <color name="primary_variant">#009624</color>
-    <color name="secondary">#00E676</color>
-    <color name="background">#F5F5F5</color>
+
+    <!-- Refined brand colors for a more polished, modern look -->
+    <color name="primary">#2E7D32</color>
+    <color name="primary_variant">#1B5E20</color>
+    <color name="secondary">#FFB300</color>
+
+    <!-- Surfaces & backgrounds -->
+    <color name="background">#F3F5F7</color>
+    <color name="surface">#FFFFFFFF</color>
+
+    <!-- Text colors -->
+    <color name="onBackground">#1E272E</color>
+    <color name="onSurfaceSecondary">#6D7885</color>
+
+    <!-- Accent / semantic colors -->
+    <color name="expense_red">#E53935</color>
+    <color name="chip_selected">#E8F5E9</color>
+    <color name="chip_unselected">#FFFFFFFF</color>
 </resources>

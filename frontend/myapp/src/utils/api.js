@@ -60,6 +60,11 @@ export const apiRequest = async (endpoint, options = {}) => {
     }
 
     if (!response.ok) {
+      if (response.status === 401) {
+        removeToken();
+        removeUser();
+        window.dispatchEvent(new Event('auth:logout'));
+      }
       throw new Error(data.error || data.message || `Request failed with status ${response.status}`);
     }
 
@@ -79,7 +84,7 @@ export const apiRequest = async (endpoint, options = {}) => {
     if (data.success !== undefined && data.report && data.report.byCategory) {
       return data.report.byCategory;
     }
-    
+
     return data;
   } catch (error) {
     console.error('API request error:', error);
@@ -108,11 +113,11 @@ export const authAPI = {
     });
 
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw new Error(data.error || data.message || 'Registration failed');
     }
-    
+
     // Token is returned but not needed for registration flow
     // User will login after registration
     return data;
@@ -131,16 +136,16 @@ export const authAPI = {
     });
 
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw new Error(data.error || data.message || 'Login failed');
     }
-    
+
     if (data.token) {
       setToken(data.token);
       setUser({ email: data.email || email });
     }
-    
+
     return data;
   },
 };

@@ -117,12 +117,12 @@ class SMSParser {
       const timeStr = timeMatch[0];
       const [time, modifier] = timeStr.split(' ');
       let [hours, minutes] = time.split(':');
-      
+
       if (modifier) {
         if (modifier.toLowerCase() === 'pm' && hours < 12) hours = parseInt(hours) + 12;
         if (modifier.toLowerCase() === 'am' && hours == 12) hours = 0;
       }
-      
+
       transactionDate.setHours(hours, minutes || 0, 0, 0);
     }
 
@@ -153,13 +153,13 @@ class SMSParser {
 
   static categorizeExpense(merchant) {
     const merchantLower = merchant.toLowerCase();
-    
+
     const categories = {
-      'Food': ['restaurant', 'zomato', 'swiggy', 'food', 'cafe', 'pizza', 'burger', 'dining', 'eat'],
+      'Food & Dining': ['restaurant', 'zomato', 'swiggy', 'food', 'cafe', 'pizza', 'burger', 'dining', 'eat'],
       'Shopping': ['amazon', 'flipkart', 'myntra', 'shopping', 'store', 'mart', 'supermarket'],
-      'Transport': ['uber', 'ola', 'rapido', 'metro', 'bus', 'train', 'petrol', 'fuel'],
+      'Transportation': ['uber', 'ola', 'rapido', 'metro', 'bus', 'train', 'petrol', 'fuel'],
       'Entertainment': ['netflix', 'hotstar', 'prime', 'movie', 'theatre', 'cinema'],
-      'Bills': ['electricity', 'water', 'gas', 'bill', 'recharge', 'mobile', 'internet'],
+      'Bills & Utilities': ['electricity', 'water', 'gas', 'bill', 'recharge', 'mobile', 'internet'],
       'Healthcare': ['hospital', 'clinic', 'pharmacy', 'medicine', 'doctor', 'medical'],
     };
 

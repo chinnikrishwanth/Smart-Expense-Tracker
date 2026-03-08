@@ -7,6 +7,7 @@ import Budget from "./Budget";
 import Reports from "./Reports";
 import Login from "./Login";
 import Signup from "./Signup";
+import FinancialChatbot from "./components/FinancialChatbot";
 import { getUser, setUser as saveUser, removeUser, removeToken } from "./utils/api";
 import "./App.css";
 
@@ -19,6 +20,16 @@ function App() {
     if (savedUser) {
       setUser(savedUser);
     }
+
+    // Listen for auth:logout event from API
+    const handleAuthLogout = () => {
+      handleLogout();
+    };
+    window.addEventListener('auth:logout', handleAuthLogout);
+
+    return () => {
+      window.removeEventListener('auth:logout', handleAuthLogout);
+    };
   }, []);
 
   // Handle login and save to localStorage
@@ -94,10 +105,11 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className="app-container">
         <NavBar />
         <main className="main-content">
+          {user && <FinancialChatbot />}
           <Routes>
             <Route
               path="/login"
